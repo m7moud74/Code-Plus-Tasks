@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Task1_VerticalSlice_ShopFlow")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+572b1aa75ac713914b245d330119c5ce287b8ee0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e693e1da77bd454db35ef4d6f2be92f533b3ce1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Task1_VerticalSlice_ShopFlow")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Task1_VerticalSlice_ShopFlow")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
