@@ -1,6 +1,6 @@
 namespace GetProduct;
 
-public record Response( string Name);
+public record Response( string Name,decimal Price,int Quantity );
 
 public record Request(int Id);
 
@@ -26,6 +26,6 @@ public class GetProductHandler
         }
 
         return new Response(
-            product.Name);
+            product.Name,product.Price,product.Quantity);
     }
 }

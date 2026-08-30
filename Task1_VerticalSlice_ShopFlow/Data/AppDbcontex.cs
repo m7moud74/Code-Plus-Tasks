@@ -10,10 +10,10 @@ public class AppDbcontext(DbContextOptions<AppDbcontext> options ):DbContext(opt
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Product>().HasData(
-            new Product { ProductID = 1, Name = "Laptop" },
-            new Product { ProductID = 2, Name = "Mouse" },
-            new Product { ProductID = 3, Name = "Keyboard" },
-            new Product { ProductID = 4, Name = "Monitor" }
+            new Product { ProductID = 1, Name = "Laptop" ,Price=10000,Quantity=5},
+            new Product { ProductID = 2, Name = "Mouse",Price=200,Quantity=3 },
+            new Product { ProductID = 3, Name = "Keyboard" ,Price=200,Quantity=3},
+            new Product { ProductID = 4, Name = "Monitor",Price=1000,Quantity=3 }
         );
     }
 }
