@@ -1,0 +1,12 @@
+D:\Code_plus_task\Orderflow\Domain\bin\Debug\net10.0\Domain.deps.json
+D:\Code_plus_task\Orderflow\Domain\bin\Debug\net10.0\Domain.dll
+D:\Code_plus_task\Orderflow\Domain\bin\Debug\net10.0\Domain.pdb
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\Domain.AssemblyInfoInputs.cache
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\Domain.AssemblyInfo.cs
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\Domain.csproj.CoreCompileInputs.cache
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\Domain.sourcelink.json
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\Domain.dll
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\refint\Domain.dll
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\Domain.pdb
+D:\Code_plus_task\Orderflow\Domain\obj\Debug\net10.0\ref\Domain.dll
