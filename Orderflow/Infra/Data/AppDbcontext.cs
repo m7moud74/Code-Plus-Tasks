@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using APP.Common.Interfaces;
 
-public class AppDbcontext(DbContextOptions<AppDbcontext> options) : DbContext(options)
+public class AppDbcontext(DbContextOptions<AppDbcontext> options) : DbContext(options), IAppDbContext
 {
     public DbSet<Product> Products { get; set; } = default!;
     public DbSet<Order> Orders { get; set; } = default!;
