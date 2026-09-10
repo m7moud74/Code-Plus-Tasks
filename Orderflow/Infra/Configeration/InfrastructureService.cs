@@ -1,4 +1,6 @@
 using APP.Common.Interfaces;
+using Hangfire;
+using Infra.BackgroudJobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,16 @@ public static class InfrastructureService
             options.UseSqlServer(configuration.GetConnectionString("cs")));
 
         services.AddScoped<IAppDbContext, AppDbcontext>();
+        services.AddScoped<IOrderProcessingJob, OrderProcessingJob>();
+        services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();
+
+        services.AddHangfire(config => config
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseSqlServerStorage(configuration.GetConnectionString("cs")));
+
+        services.AddHangfireServer();
             
         return services;
     }

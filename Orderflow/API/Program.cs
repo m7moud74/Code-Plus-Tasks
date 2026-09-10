@@ -1,4 +1,5 @@
 using APP;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseHangfireDashboard("/hangfire");
 
 app.MapControllers();
 

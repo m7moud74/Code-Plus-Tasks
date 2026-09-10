@@ -4,7 +4,10 @@ using APP.Common.Interfaces;
 
 namespace APP.Features.Orders.Commands.CreateOrder;
 
-public class CreateOrderHandler(IAppDbContext context) : IRequestHandler<CreateOrderCommand, CreateOrderResult>
+public class CreateOrderHandler(
+    IAppDbContext context,
+    IBackgroundJobService backgroundJobService
+) : IRequestHandler<CreateOrderCommand, CreateOrderResult>
 {
     public async Task<CreateOrderResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
@@ -69,6 +72,12 @@ public class CreateOrderHandler(IAppDbContext context) : IRequestHandler<CreateO
 
         context.Orders.Add(order);
         await context.SaveChangesAsync(cancellationToken);
+
+        // Schedule background job to process the pending order and refresh dashboard after 10 seconds
+        backgroundJobService.Schedule<IOrderProcessingJob>(
+            job => job.RefreshOrderDashboardAsync(default),
+            TimeSpan.FromSeconds(10)
+        );
 
         return new CreateOrderResult(order.Id, order.TotalAmount, order.Status.ToString());
     }
