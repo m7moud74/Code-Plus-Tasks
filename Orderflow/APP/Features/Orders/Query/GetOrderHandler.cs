@@ -24,6 +24,7 @@ public class GetOrderHandler(IAppDbContext context) : IRequestHandler<GetOrderQu
         )).ToList();
 
         return new GetOrderResult(
+            order.Id,
             order.CustomerName,
             order.TotalAmount,
             order.Status.ToString(),

@@ -6,6 +6,7 @@ public class AppDbcontext(DbContextOptions<AppDbcontext> options) : DbContext(op
     public DbSet<Product> Products { get; set; } = default!;
     public DbSet<Order> Orders { get; set; } = default!;
     public DbSet<OrderItem> OrderItems { get; set; } = default!;
+    public DbSet<OrderDashboardReadModel> OrderDashboards { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,6 +25,11 @@ public class AppDbcontext(DbContextOptions<AppDbcontext> options) : DbContext(op
         modelBuilder.Entity<Order>(entity =>
         {
             entity.Property(o => o.TotalAmount).HasPrecision(18, 2);
+        });
+
+        modelBuilder.Entity<OrderDashboardReadModel>(entity =>
+        {
+            entity.Property(d => d.TotalAmount).HasPrecision(18, 2);
         });
 
         modelBuilder.SeedData();
