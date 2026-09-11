@@ -12,17 +12,21 @@ public class OrdersController(ISender mediator) : ControllerBase
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
-        return Ok(result);
+        if (result.IsFailure)
+        {
+            return BadRequest(new { error = result.Error });
+        }
+        return CreatedAtAction(nameof(GetOrder), new { id = result.Value.OrderId }, result.Value);
     }
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetOrder(int id, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetOrderQuery(id), cancellationToken);
-        if (result == null)
+        if (result.IsFailure)
         {
-            return NotFound(new { message = $"Order with ID {id} not found." });
+            return NotFound(new { error = result.Error });
         }
-        return Ok(result);
+        return Ok(result.Value);
     }
     [HttpGet]
     public async Task<IActionResult> GetAllOrders(

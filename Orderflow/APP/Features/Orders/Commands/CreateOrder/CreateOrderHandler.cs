@@ -1,26 +1,17 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using APP.Common.Interfaces;
+using APP.Common.Results;
 
 namespace APP.Features.Orders.Commands.CreateOrder;
 
 public class CreateOrderHandler(
     IAppDbContext context,
     IBackgroundJobService backgroundJobService
-) : IRequestHandler<CreateOrderCommand, CreateOrderResult>
+) : IRequestHandler<CreateOrderCommand, Result<CreateOrderResult>>
 {
-    public async Task<CreateOrderResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CreateOrderResult>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.CustomerName))
-        {
-            throw new ArgumentException("Customer name is required.");
-        }
-
-        if (request.Items == null || request.Items.Count == 0)
-        {
-            throw new ArgumentException("An order must contain at least one item.");
-        }
-
         var productIds = request.Items.Select(i => i.ProductId).Distinct().ToList();
         var products = await context.Products
             .Where(p => productIds.Contains(p.Id))
@@ -28,7 +19,7 @@ public class CreateOrderHandler(
 
         if (products.Count != productIds.Count)
         {
-            throw new InvalidOperationException("One or more products were not found.");
+            return Result<CreateOrderResult>.Failure("One or more products were not found.");
         }
 
         var order = new Order
@@ -42,16 +33,13 @@ public class CreateOrderHandler(
 
         foreach (var itemDto in request.Items)
         {
-            if (itemDto.Quantity <= 0)
-            {
-                throw new ArgumentException($"Quantity for product {itemDto.ProductId} must be greater than zero.");
-            }
-
             var product = products.First(p => p.Id == itemDto.ProductId);
 
             if (product.Quantity < itemDto.Quantity)
             {
-                throw new InvalidOperationException($"Insufficient stock for product '{product.Name}'. Available: {product.Quantity}, Requested: {itemDto.Quantity}.");
+                return Result<CreateOrderResult>.Failure(
+                    $"Insufficient stock for product '{product.Name}'. Available: {product.Quantity}, Requested: {itemDto.Quantity}."
+                );
             }
 
             // Decrement inventory stock
@@ -79,6 +67,8 @@ public class CreateOrderHandler(
             TimeSpan.FromSeconds(10)
         );
 
-        return new CreateOrderResult(order.Id, order.TotalAmount, order.Status.ToString());
+        return Result<CreateOrderResult>.Success(
+            new CreateOrderResult(order.Id, order.TotalAmount, order.Status.ToString())
+        );
     }
 }

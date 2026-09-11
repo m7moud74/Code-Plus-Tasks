@@ -23,6 +23,15 @@ public static class InfrastructureService
             .UseSqlServerStorage(configuration.GetConnectionString("cs")));
 
         services.AddHangfireServer();
+
+        // Redis Caching setup
+        var redisConn = configuration.GetConnectionString("Redis") ?? "localhost:6379";
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = redisConn;
+            options.InstanceName = "OrderFlow:";
+        });
+        services.AddScoped<ICacheService, Infra.Caching.RedisCacheService>();
             
         return services;
     }

@@ -6,6 +6,7 @@ namespace Infra.BackgroudJobs;
 
 public class OrderProcessingJob(
     IAppDbContext context,
+    ICacheService cacheService,
     ILogger<OrderProcessingJob> logger
 ) : IOrderProcessingJob
 {
@@ -23,15 +24,17 @@ public class OrderProcessingJob(
         foreach (var order in pendingOrders)
         {
             order.Status = OrderStatus.Completed;
+            // Invalidate cache for the updated order
+            await cacheService.RemoveAsync($"orders:{order.Id}", cancellationToken);
         }
 
         await context.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Processed {Count} pending order(s) to Completed.", pendingOrders.Count);
+        logger.LogInformation("Processed {Count} pending order(s) to Completed and invalidated their cache.", pendingOrders.Count);
     }
 
     public async Task RefreshOrderDashboardAsync(CancellationToken cancellationToken = default)
     {
-        // 1. Ensure any pending orders are processed first
+        // 1. Ensure any pending orders are processed and their cache invalidated first
         await ProcessPendingOrdersAsync(cancellationToken);
 
         // 2. Fetch aggregated order data for the Materialized View
