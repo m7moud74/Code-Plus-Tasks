@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using APP.Common.Behaviors;
+using APP.Common.Diagnostics;
 
 namespace APP;
 
@@ -16,6 +17,8 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+
+        services.AddSingleton<OrderMetrics>();
 
         return services;
     }
