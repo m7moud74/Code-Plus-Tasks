@@ -97,6 +97,7 @@ app.UseSwaggerUI();
 
 app.UseHangfireDashboard("/hangfire");
 app.UseSerilogRequestLogging();
+app.MapPrometheusScrapingEndpoint();
 
 app.MapControllers();
 app.MapHealthChecks("/health");
